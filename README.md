@@ -53,3 +53,65 @@ When to use each strategy (brief):
 Extending to v3
 
 - Add `app/api/v3/products/route.js` and update `lib/products.js` to support `v3` shaping.
+
+Authentication (JWT)
+
+This project now includes simple JWT-based authentication for the API routes.
+
+- Environment: set `DATABASE_URL`, `JWT_SECRET`, and `JWT_EXPIRES_IN` in the project root `.env` (a placeholder `.env` is included).
+- Database: create a `users` table in your MySQL database (example SQL below).
+- Endpoints:
+  - `POST /api/auth/register` — register a new user. Returns JSON `{ token, user }`.
+  - `POST /api/auth/login` — login with email/password. Returns JSON `{ token, user }`.
+  - Protected routes: `GET /api/products`, `GET /api/v1/products`, and `GET /api/v2/products` require the header `Authorization: Bearer <token>`.
+
+Example SQL to create the `users` table (run in your MySQL/XAMPP DB):
+
+```sql
+CREATE TABLE users (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  name VARCHAR(255) DEFAULT NULL,
+  refresh_token VARCHAR(255) DEFAULT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+Install runtime dependencies:
+
+```bash
+npm install jsonwebtoken bcryptjs mysql2
+```
+
+Quick usage examples (curl):
+
+Register a user and receive a token:
+
+```bash
+curl -s -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"alice@example.com","password":"secret","name":"Alice"}'
+```
+
+Login and receive a token:
+
+```bash
+curl -s -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"alice@example.com","password":"secret"}'
+```
+
+Call a protected endpoint using the returned token:
+
+```bash
+curl -s -H "Authorization: Bearer <token>" http://localhost:3000/api/v1/products
+```
+
+Notes & next steps
+
+- Current behavior: tokens are returned in JSON for simplicity. In a production-ready setup we recommend issuing tokens as Secure, HttpOnly cookies and adding refresh-token rotation.
+- You can also add an `app/middleware.js` to protect route patterns globally instead of calling the auth helper in each route.
+- Consider using an ORM (Prisma) or adding stricter validation and rate-limiting for production.
+

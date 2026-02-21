@@ -2,6 +2,7 @@ import {
   getProductsForVersion,
   normalizeVersion,
 } from "../../../lib/products.js";
+import { requireAuth } from "../../../lib/auth.js";
 
 export async function GET(request) {
   try {
@@ -23,6 +24,10 @@ export async function GET(request) {
       strategy = "Query";
       normalized = normalizeVersion("1");
     }
+
+    // protect route
+    const auth = await requireAuth(request);
+    if (auth instanceof Response) return auth;
 
     // normalizeVersion returns 'v1' or 'v2'
     const data = getProductsForVersion(normalized);
