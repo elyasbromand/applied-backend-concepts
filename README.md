@@ -1,4 +1,4 @@
-# Next.js API Versioning Demo (App Router)
+# Next.js API Versioning and JWT Demo (App Router)
 
 This repository demonstrates three API versioning strategies using Next.js App Router route handlers (JavaScript):
 
@@ -114,4 +114,3 @@ Notes & next steps
 - Current behavior: tokens are returned in JSON for simplicity. In a production-ready setup we recommend issuing tokens as Secure, HttpOnly cookies and adding refresh-token rotation.
 - You can also add an `app/middleware.js` to protect route patterns globally instead of calling the auth helper in each route.
 - Consider using an ORM (Prisma) or adding stricter validation and rate-limiting for production.
-
