@@ -1,0 +1,199 @@
+{
+  "info": {
+    "name": "Applied Backend Concepts API",
+    "_postman_id": "a1b2c3d4-applied-backend",
+    "description": "Collection for the API routes generated from Prisma models.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","users"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"passwordHash\": \"hashedpassword\",\n  \"name\": \"John Doe\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api","users"] }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"] }
+          },
+          "variable": [{ "key": "id", "value": "1" }]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"name\": \"Jane Doe\" }" },
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"] }
+          },
+          "variable": [{ "key": "id", "value": "1" }]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"] }
+          },
+          "variable": [{ "key": "id", "value": "1" }]
+        }
+      ]
+    },
+    {
+      "name": "Departments",
+      "item": [
+        {
+          "name": "List Departments",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/departments", "host": ["{{baseUrl}}"], "path": ["api","departments"] } }
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"name\": \"HR\", \"description\": \"Human Resources\" }" },
+            "url": { "raw": "{{baseUrl}}/api/departments", "host": ["{{baseUrl}}"], "path": ["api","departments"] }
+          }
+        },
+        {
+          "name": "Get Department",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/departments/:id", "host": ["{{baseUrl}}"], "path": ["api","departments",":id"] } },
+          "variable": [{ "key": "id", "value": "1" }]
+        },
+        {
+          "name": "Update Department",
+          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"description\": \"Updated\" }" }, "url": { "raw": "{{baseUrl}}/api/departments/:id", "host": ["{{baseUrl}}"], "path": ["api","departments",":id"] } },
+          "variable": [{ "key": "id", "value": "1" }]
+        },
+        {
+          "name": "Delete Department",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/departments/:id", "host": ["{{baseUrl}}"], "path": ["api","departments",":id"] } },
+          "variable": [{ "key": "id", "value": "1" }]
+        }
+      ]
+    },
+    {
+      "name": "Positions",
+      "item": [
+        { "name": "List Positions", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/positions", "host": ["{{baseUrl}}"], "path": ["api","positions"] } } },
+        { "name": "Create Position", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"title\": \"Engineer\", \"description\": \"Software Engineer\" }" }, "url": { "raw": "{{baseUrl}}/api/positions", "host": ["{{baseUrl}}"], "path": ["api","positions"] } } },
+        { "name": "Get Position", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/positions/:id", "host": ["{{baseUrl}}"], "path": ["api","positions",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Update Position", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"description\": \"Updated\" }" }, "url": { "raw": "{{baseUrl}}/api/positions/:id", "host": ["{{baseUrl}}"], "path": ["api","positions",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Delete Position", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/positions/:id", "host": ["{{baseUrl}}"], "path": ["api","positions",":id"] } }, "variable": [{ "key": "id", "value": "1" }] }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "List Employees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/employees", "host": ["{{baseUrl}}"], "path": ["api","employees"] }
+          }
+        },
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Alice Smith\",\n  \"email\": \"alice@example.com\",\n  \"dateOfBirth\": \"1990-01-01T00:00:00.000Z\",\n  \"hireDate\": \"2022-01-01T00:00:00.000Z\",\n  \"departmentId\": 1,\n  \"positionId\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/employees", "host": ["{{baseUrl}}"], "path": ["api","employees"] }
+          }
+        },
+        {
+          "name": "Get Employee",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employees/:id", "host": ["{{baseUrl}}"], "path": ["api","employees",":id"] } },
+          "variable": [{ "key": "id", "value": "1" }]
+        },
+        {
+          "name": "Update Employee",
+          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"fullName\": \"Alice Updated\" }" }, "url": { "raw": "{{baseUrl}}/api/employees/:id", "host": ["{{baseUrl}}"], "path": ["api","employees",":id"] } },
+          "variable": [{ "key": "id", "value": "1" }]
+        },
+        {
+          "name": "Delete (Soft) Employee",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/employees/:id", "host": ["{{baseUrl}}"], "path": ["api","employees",":id"] } },
+          "variable": [{ "key": "id", "value": "1" }]
+        }
+      ]
+    },
+    {
+      "name": "Employee Addresses",
+      "item": [
+        { "name": "List Addresses", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-addresses", "host": ["{{baseUrl}}"], "path": ["api","employee-addresses"] } } },
+        { "name": "Create Address", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"employeeId\": 1, \"street\": \"123 Main St\", \"city\": \"Town\", \"country\": \"Country\", \"isPrimary\": true }" }, "url": { "raw": "{{baseUrl}}/api/employee-addresses", "host": ["{{baseUrl}}"], "path": ["api","employee-addresses"] } } },
+        { "name": "Get Address", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-addresses/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-addresses",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Update Address", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"city\": \"New City\" }" }, "url": { "raw": "{{baseUrl}}/api/employee-addresses/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-addresses",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Delete Address", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-addresses/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-addresses",":id"] } }, "variable": [{ "key": "id", "value": "1" }] }
+      ]
+    },
+    {
+      "name": "Employee Salaries",
+      "item": [
+        { "name": "List Salaries", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-salaries", "host": ["{{baseUrl}}"], "path": ["api","employee-salaries"] } } },
+        { "name": "Create Salary", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"employeeId\": 1, \"basicSalary\": 5000, \"allowance\": 500, \"effectiveFrom\": \"2024-01-01T00:00:00.000Z\" }" }, "url": { "raw": "{{baseUrl}}/api/employee-salaries", "host": ["{{baseUrl}}"], "path": ["api","employee-salaries"] } } },
+        { "name": "Get Salary", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-salaries/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-salaries",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Update Salary", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"basicSalary\": 5500 }" }, "url": { "raw": "{{baseUrl}}/api/employee-salaries/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-salaries",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Deactivate Salary (DELETE)", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-salaries/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-salaries",":id"] } }, "variable": [{ "key": "id", "value": "1" }] }
+      ]
+    },
+    {
+      "name": "Employee Documents",
+      "item": [
+        { "name": "List Documents", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-documents", "host": ["{{baseUrl}}"], "path": ["api","employee-documents"] } } },
+        { "name": "Create Document", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"employeeId\": 1, \"documentName\": \"Passport\", \"filePath\": \"/uploads/passport.pdf\" }" }, "url": { "raw": "{{baseUrl}}/api/employee-documents", "host": ["{{baseUrl}}"], "path": ["api","employee-documents"] } } },
+        { "name": "Get Document", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-documents/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-documents",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Update Document", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"documentName\": \"Passport Updated\" }" }, "url": { "raw": "{{baseUrl}}/api/employee-documents/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-documents",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Delete Document", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-documents/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-documents",":id"] } }, "variable": [{ "key": "id", "value": "1" }] }
+      ]
+    },
+    {
+      "name": "Employee Attendances",
+      "item": [
+        { "name": "List Attendances", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-attendances", "host": ["{{baseUrl}}"], "path": ["api","employee-attendances"] } } },
+        { "name": "Create Attendance", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"employeeId\": 1, \"date\": \"2024-02-01T00:00:00.000Z\", \"checkIn\": \"2024-02-01T08:00:00.000Z\", \"checkOut\": \"2024-02-01T17:00:00.000Z\" }" }, "url": { "raw": "{{baseUrl}}/api/employee-attendances", "host": ["{{baseUrl}}"], "path": ["api","employee-attendances"] } } },
+        { "name": "Get Attendance", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-attendances/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-attendances",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Update Attendance", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{ \"checkOut\": \"2024-02-01T18:00:00.000Z\" }" }, "url": { "raw": "{{baseUrl}}/api/employee-attendances/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-attendances",":id"] } }, "variable": [{ "key": "id", "value": "1" }] },
+        { "name": "Delete Attendance", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/employee-attendances/:id", "host": ["{{baseUrl}}"], "path": ["api","employee-attendances",":id"] } }, "variable": [{ "key": "id", "value": "1" }] }
+      ]
+    }
+  ]
+}
