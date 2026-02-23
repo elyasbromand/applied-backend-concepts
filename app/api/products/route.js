@@ -1,8 +1,8 @@
+import { NextResponse } from "next/server.js";
 import {
   getProductsForVersion,
   normalizeVersion,
 } from "../../../lib/products.js";
-import { requireAuth } from "../../../lib/auth.js";
 
 export async function GET(request) {
   try {
@@ -26,8 +26,8 @@ export async function GET(request) {
     }
 
     // protect route
-    const auth = await requireAuth(request);
-    if (auth instanceof Response) return auth;
+    // const auth = await requireAuth(request);
+    // if (auth instanceof Response) return auth;
 
     // normalizeVersion returns 'v1' or 'v2'
     const data = getProductsForVersion(normalized);
@@ -39,7 +39,9 @@ export async function GET(request) {
       data,
     };
 
-    return new Response(JSON.stringify(body), {
+    
+
+    return NextResponse.json(body, {
       status: 200,
       headers: { "content-type": "application/json" },
     });

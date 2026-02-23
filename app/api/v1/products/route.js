@@ -1,10 +1,10 @@
 import { getProductsForVersion } from "../../../../lib/products.js";
-import { requireAuth } from "../../../../lib/auth.js";
 
 export async function GET(request) {
   try {
-    const auth = await requireAuth(request);
-    if (auth instanceof Response) return auth;
+    // for protecting the route
+    // const auth = await requireAuth(request);
+    // if (auth instanceof Response) return auth;
 
     const data = getProductsForVersion("v1");
     const body = {
