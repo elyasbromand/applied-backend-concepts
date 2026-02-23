@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id           BigInt   @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  refreshToken String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+
+model Department {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+
+  employees   Employee[]
+}
+
+model Position {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+
+  employees   Employee[]
+}
+
+model Employee {
+  id           Int       @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  dateOfBirth  DateTime
+  hireDate     DateTime
+
+  departmentId Int
+  positionId   Int
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isDeleted    Boolean   @default(false)
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  position     Position   @relation(fields: [positionId], references: [id])
+
+  addresses    EmployeeAddress[]
+  salaries     EmployeeSalary[]
+  documents    EmployeeDocument[]
+  attendances  EmployeeAttendance[]
+
+  @@index([departmentId])
+  @@index([positionId])
+}
+
+model EmployeeAddress {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+
+  street     String
+  city       String
+  country    String
+  isPrimary  Boolean  @default(false)
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId])
+}
+
+model EmployeeSalary {
+  id            Int      @id @default(autoincrement())
+  employeeId    Int
+
+  basicSalary   Decimal
+  allowance     Decimal
+  effectiveFrom DateTime
+  isActive      Boolean  @default(true)
+
+  employee      Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId])
+}
+
+model EmployeeDocument {
+  id           Int      @id @default(autoincrement())
+  employeeId   Int
+
+  documentName String
+  filePath     String
+  uploadedAt   DateTime @default(now())
+
+  employee     Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId])
+}
+
+model EmployeeAttendance {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+
+  date       DateTime
+  checkIn    DateTime
+  checkOut   DateTime
+  isPresent  Boolean  @default(true)
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId])
+}
+
