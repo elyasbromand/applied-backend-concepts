@@ -1,44 +1,47 @@
-import { hashPassword } from "../../../../lib/hash.js";
 import {
-  createUser,
-  findUserByEmail,
+  findUserByRefreshToken,
   setRefreshToken,
 } from "../../../../lib/users.js";
 import { sign } from "../../../../lib/jwt.js";
 import crypto from "crypto";
 
+function parseCookies(cookieHeader) {
+  const map = {};
+  if (!cookieHeader) return map;
+  cookieHeader.split(";").forEach((part) => {
+    const [k, ...v] = part.split("=");
+    if (!k) return;
+    map[k.trim()] = v.join("=").trim();
+  });
+  return map;
+}
+
 export async function POST(request) {
   try {
-    const body = await request.json();
-    const { email, password, name } = body;
-
-    if (!email || !password) {
-      return new Response(
-        JSON.stringify({ error: "Email and password are required" }),
-        {
-          status: 400,
-          headers: { "content-type": "application/json" },
-        },
-      );
-    }
-
-    const existing = await findUserByEmail(email);
-    if (existing) {
-      return new Response(JSON.stringify({ error: "Email already in use" }), {
-        status: 409,
+    const cookieHeader = request.headers.get("cookie") || "";
+    const cookies = parseCookies(cookieHeader);
+    const refresh = cookies.refreshToken;
+    if (!refresh) {
+      return new Response(JSON.stringify({ error: "No refresh token" }), {
+        status: 401,
         headers: { "content-type": "application/json" },
       });
     }
 
-    const passwordHash = await hashPassword(password);
-    const user = await createUser({ email, passwordHash, name });
+    const user = await findUserByRefreshToken(refresh);
+    if (!user) {
+      return new Response(JSON.stringify({ error: "Invalid refresh token" }), {
+        status: 401,
+        headers: { "content-type": "application/json" },
+      });
+    }
 
-    const token = sign({ sub: String(user.id), email: user.email });
-
-    // generate refresh token and store hashed value
+    // rotate refresh token
     const random = crypto.randomBytes(48).toString("hex");
     const refreshRaw = `${user.id.toString()}.${random}`;
     await setRefreshToken(user.id, refreshRaw);
+
+    const token = sign({ sub: String(user.id), email: user.email });
 
     const refreshTtl = parseInt(
       process.env.REFRESH_TOKEN_TTL_SECONDS || String(60 * 60 * 24 * 7),
@@ -53,7 +56,7 @@ export async function POST(request) {
         user: { id: user.id.toString(), email: user.email, name: user.name },
       }),
       {
-        status: 201,
+        status: 200,
         headers: { "content-type": "application/json", "Set-Cookie": cookie },
       },
     );

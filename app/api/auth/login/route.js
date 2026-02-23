@@ -1,6 +1,7 @@
 import { comparePassword } from "../../../../lib/hash.js";
-import { findUserByEmail } from "../../../../lib/users.js";
+import { findUserByEmail, setRefreshToken } from "../../../../lib/users.js";
 import { sign } from "../../../../lib/jwt.js";
+import crypto from "crypto";
 
 export async function POST(request) {
   try {
@@ -38,6 +39,18 @@ export async function POST(request) {
 
     const token = sign({ sub: String(user.id), email: user.email });
 
+    // generate refresh token: format <userId>.<random>
+    const random = crypto.randomBytes(48).toString("hex");
+    const refreshRaw = `${user.id.toString()}.${random}`;
+    await setRefreshToken(user.id, refreshRaw);
+
+    const refreshTtl = parseInt(
+      process.env.REFRESH_TOKEN_TTL_SECONDS || String(60 * 60 * 24 * 7),
+      10,
+    );
+    const secureFlag = process.env.NODE_ENV === "production" ? "; Secure" : "";
+    const cookie = `refreshToken=${refreshRaw}; HttpOnly; Path=/; Max-Age=${refreshTtl}; SameSite=Strict${secureFlag}`;
+
     return new Response(
       JSON.stringify({
         token,
@@ -45,7 +58,7 @@ export async function POST(request) {
       }),
       {
         status: 200,
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", "Set-Cookie": cookie },
       },
     );
   } catch (err) {
