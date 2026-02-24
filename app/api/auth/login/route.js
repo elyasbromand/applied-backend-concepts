@@ -19,6 +19,7 @@ export async function POST(request) {
     }
 
     const user = await findUserByEmail(email);
+
     if (!user) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
         status: 401,
@@ -28,7 +29,7 @@ export async function POST(request) {
 
     const ok = await comparePassword(
       password,
-      user.password_hash || user.passwordHash || user.password,
+      user.passwordHash,
     );
     if (!ok) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
