@@ -37,6 +37,8 @@ services:
       DATABASE_PASSWORD: admin
       DATABASE_NAME: applied-backend-concepts-docker-database
       NODE_ENV: production
+      JWT_EXPIRES_IN: 1h
+      JWT_SECRET: the_quick_brown_fox_jumps_over_the_lazy_dog
 
     ports:
       - "3000:3000"
