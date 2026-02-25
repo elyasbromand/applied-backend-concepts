@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: applied-mysql-server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: applied-backend-concepts
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: applied-backend-concepts
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://appuser:apppass@db:3306/applied-backend-concepts
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:

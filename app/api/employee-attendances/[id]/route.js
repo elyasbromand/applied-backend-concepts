@@ -4,7 +4,8 @@ import prisma from "../../../../lib/prisma.js";
 // GET: Retrieve an attendance record by id.
 export async function GET(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const rec = await prisma.employeeAttendance.findUnique({ where: { id } });
     if (!rec)
       return new Response(JSON.stringify({ error: "Not found" }), {
@@ -21,7 +22,8 @@ export async function GET(request, { params }) {
 // PUT: Update an attendance record.
 export async function PUT(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const body = await request.json();
     const updated = await prisma.employeeAttendance.update({
       where: { id },
@@ -37,7 +39,8 @@ export async function PUT(request, { params }) {
 // DELETE: Delete an attendance record.
 export async function DELETE(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     await prisma.employeeAttendance.delete({ where: { id } });
     return new Response(null, { status: 204 });
   } catch (err) {
