@@ -1,7 +1,10 @@
 node_modules
+logs
 .next
-out
-build
-Dockerfile
 .git
-.env
+.gitignore
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*

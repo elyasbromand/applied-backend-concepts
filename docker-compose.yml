@@ -1,31 +1,56 @@
-version: "3.9"
-
 services:
 
   db:
     image: mysql:8.0
-    container_name: applied-mysql-server
+    container_name: mysql-db
     restart: always
+
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: applied-backend-concepts
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: apppass
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: applied-backend-concepts-docker-database
+
     ports:
       - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
 
-  web:
-    build: .
-    container_name: applied-backend-concepts
+    volumes:
+      - applied-backend-concepts-db-data:/var/lib/mysql
+
+    networks:
+      - applied-backend-concepts-docker-network
+
+
+
+  app:
+    build:
+      context: .
+      target: runner
+
+    container_name: nextjs-app
+
     restart: always
+
+    environment:
+      PORT: 3000
+      DATABASE_URL: mysql://root:admin@db:3306/applied-backend-concepts-docker-database
+      DATABASE_HOST: db
+      DATABASE_USER: root
+      DATABASE_PASSWORD: admin
+      DATABASE_NAME: applied-backend-concepts-docker-database
+      NODE_ENV: production
+
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: mysql://appuser:apppass@db:3306/applied-backend-concepts
+
     depends_on:
       - db
 
+    networks:
+      - applied-backend-concepts-docker-network
+
+
+
+networks:
+  applied-backend-concepts-docker-network:
+
 volumes:
-  mysql_data:
+  applied-backend-concepts-db-data:
