@@ -4,7 +4,8 @@ import prisma from "../../../../lib/prisma.js";
 // GET: Retrieve an employee by id (includes department, position and related records).
 export async function GET(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const rec = await prisma.employee.findUnique({
       where: { id },
       include: {
@@ -31,7 +32,8 @@ export async function GET(request, { params }) {
 // PUT: Update employee fields.
 export async function PUT(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const body = await request.json();
     const updated = await prisma.employee.update({ where: { id }, data: body });
     return NextResponse.json(updated, { status: 200 });
@@ -44,7 +46,8 @@ export async function PUT(request, { params }) {
 // DELETE: Soft-delete an employee by setting `isDeleted` to true.
 export async function DELETE(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     await prisma.employee.update({ where: { id }, data: { isDeleted: true } });
     return new Response(null, { status: 204 });
   } catch (err) {
