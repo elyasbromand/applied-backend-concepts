@@ -4,7 +4,8 @@ import prisma from "../../../../lib/prisma.js";
 // GET: Retrieve a department by id.
 export async function GET(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const dep = await prisma.department.findUnique({ where: { id } });
     if (!dep)
       return new Response(JSON.stringify({ error: "Not found" }), {
@@ -21,7 +22,8 @@ export async function GET(request, { params }) {
 // PUT: Update a department.
 export async function PUT(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const body = await request.json();
     const updated = await prisma.department.update({
       where: { id },
@@ -37,7 +39,8 @@ export async function PUT(request, { params }) {
 // DELETE: Delete a department only if it has no (non-deleted) employees.
 export async function DELETE(request, { params }) {
   try {
-    const id = Number(params.id);
+    const p = await params;
+    const id = parseInt(p.id);
     const count = await prisma.employee.count({
       where: { departmentId: id, isDeleted: false },
     });
