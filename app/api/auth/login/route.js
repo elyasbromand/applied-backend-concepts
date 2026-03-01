@@ -27,7 +27,7 @@ export async function POST(request) {
 
     const ok = await comparePassword(
       password,
-      user.password_hash || user.passwordHash || user.password,
+      user.passwordHash,
     );
     if (!ok) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
